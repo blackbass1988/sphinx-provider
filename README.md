@@ -1,7 +1,11 @@
 # Sphinx-search API provider
 Provides one more abstract layer for query building
 
-### Fast start
+### Installation
+comming soon in packagist...
+
+
+#### Fast start
 ```php
     $pool = array (
                     array(
@@ -34,7 +38,7 @@ Provides one more abstract layer for query building
 
 ```
 
-### Grouping (count) via provider
+#### Grouping (count) via provider
 ```php
     $sph->getGroupRequestFromApi('model_id');
     // [data] =>
@@ -46,7 +50,7 @@ Provides one more abstract layer for query building
     // [time] => 0.066
 ```
 
-### grouping with additional fields returning
+#### grouping with additional fields returning
 ```php
     $sph->getGroupRequestFromApi('model_id', 'model_name asc', array('model_name', 'firm_name'));
     // [data] =>
