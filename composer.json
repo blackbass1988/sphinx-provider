@@ -1,0 +1,17 @@
+{
+    "name": "blackbass1988/sphinx-provider",
+    "description": "one more abstract layer for sphinxsearch api client",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Oleg Salionov",
+            "email": "oleg@salionov.ru"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "src" }
+    },
+    "require": {
+        "neutron/sphinxsearch-api": "*"
+    }
+}
