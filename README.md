@@ -39,7 +39,7 @@ Provides one more abstract layer for query building
     $sph->getGroupRequestFromApi('model_id');
     // [data] =>
     //   Array ( [0] =>
-            Array ( [id] => 2 [cnt] => 421
+    //      Array ( [id] => 2 [cnt] => 421
     // ....
     // [total] => 1177
     // [total_found] => 1177
@@ -51,7 +51,7 @@ Provides one more abstract layer for query building
     $sph->getGroupRequestFromApi('model_id', 'model_name asc', ['model_name', 'firm_name']);
     // [data] =>
         //   Array ( [0] =>
-                Array ( [id] => 2 [cnt] => 421 [model_name] => 'Corolla' [firm_name] => 'Toyota'
+        //      Array ( [id] => 2 [cnt] => 421 [model_name] => 'Corolla' [firm_name] => 'Toyota'
         // ....
         // [total] => 1177
         // [total_found] => 1177
