@@ -1,5 +1,5 @@
 # Sphinx-search API provider
-Provides one more abstract layer for query building
+Provides one more abstract layer for [sphinx(http://sphinxsearch.com/)] query building
 
 ### Installation
 comming soon in packagist...
