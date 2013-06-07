@@ -691,9 +691,11 @@ class SphinxProvider {
     }
 
     /**
+     * @param array $additionalFields
+     *
      * @return array|bool|mixed|string
      */
-    public function doApiRequest()
+    public function doApiRequest($additionalFields = array())
     {
         $output = null;
 //        $query = $this->getSphinxQuery();
@@ -701,6 +703,12 @@ class SphinxProvider {
 //        $output = memcache_get($queryKey);
 
         if ($output == null) {
+
+            if ($additionalFields !== null) {
+                foreach ($additionalFields as $additionalField) {
+                    $this->addSelect($additionalField);
+                }
+            }
             $client = $this->_doApiRequest();
 
             $result = $client->Query($this->fulltextQuery, $this->indexes);
@@ -722,10 +730,22 @@ class SphinxProvider {
             } else {
                 $output['data'] = array();
                 foreach ($result['matches'] as $key => $value) {
-                    $output['data'][] = $key;
+                    $newValue = array(
+                        'id' => $key,
+                    );
+                    if ($additionalFields !== null) {
+                        foreach ($additionalFields as $target=>$additionalField) {
+                            if (is_string($target)) {
+                                $newValue[$target] = $value['attrs'][$additionalField];
+                            } else {
+                                $newValue[$additionalField] = $value['attrs'][$additionalField];
+                            }
+                        }
+                    }
+                    $output['data'][$key] = $newValue;
                 }
                 $output['total'] = sizeof($output['data']);
-                $output['idsByOrder'] = join(',', $output['data']);
+                $output['idsByOrder'] = implode(',', array_keys($output['data']));
                 if (sizeof($output['data']) == 0) {
                     $output['data'] = array(0);
                     $output['idsByOrder'] = '0';
