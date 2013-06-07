@@ -20,7 +20,7 @@ Provides one more abstract layer for query building
     $sph = new SphinxProvider($pool);
     $sph->addFilter('field', 1); // filter field = 1
     $sph->addFilter('field2', array(1,2,3), true); // filter field2 != [1, 2, 3]
-    $sph->addFilter(['field3', 'field4'], 5); // filters field3 = 5,field4 = 5
+    $sph->addFilter(array('field3', 'field4'), 5); // filters field3 = 5,field4 = 5
     $sph->setIndex('myindex');
     $sph->doApiRequest();
     //output format
@@ -48,7 +48,7 @@ Provides one more abstract layer for query building
 
 ### grouping with additional fields returning
 ```php
-    $sph->getGroupRequestFromApi('model_id', 'model_name asc', ['model_name', 'firm_name']);
+    $sph->getGroupRequestFromApi('model_id', 'model_name asc', array('model_name', 'firm_name'));
     // [data] =>
         //   Array ( [0] =>
         //      Array ( [id] => 2 [cnt] => 421 [model_name] => 'Corolla' [firm_name] => 'Toyota'
