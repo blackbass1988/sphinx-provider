@@ -2,6 +2,7 @@
     "name": "blackbass1988/sphinx-provider",
     "description": "one more abstract layer for sphinxsearch api client",
     "minimum-stability": "stable",
+    "keywords": ["sphinx"],
     "authors": [
         {
             "name": "Oleg Salionov",
