@@ -547,10 +547,13 @@ class SphinxProvider
             $this->sphinxHost = $host['host'];
             $this->sphinxApiClient->SetConnectTimeout(self::CONNECTION_TIMEOUT);
             $this->sphinxApiClient->SetMaxQueryTime(self::MAX_QUERY_TIME);
-
             $this->sphinxApiClient->SetServer($host['host'], $host['port']);
-            $this->sphinxApiClient->Open();
+            if (!$this->sphinxApiClient->Open()) {
+                $this->sphinxApiClient = null;
+                return false;
+            }
         }
+        return true;
     }
 
     /**
