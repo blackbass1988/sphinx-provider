@@ -12,6 +12,7 @@
         "psr-0": { "": "src" }
     },
     "require": {
+        "php":">=5.3.0",
         "neutron/sphinxsearch-api": "*"
     }
 }
