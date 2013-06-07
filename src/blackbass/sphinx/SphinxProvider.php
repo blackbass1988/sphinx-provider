@@ -7,7 +7,8 @@ namespace blackbass\sphinx;
  *
  * @package blackbass\sphinx
  */
-class SphinxProvider {
+class SphinxProvider
+{
     /**
      * query type "enum"
      */
@@ -52,14 +53,16 @@ class SphinxProvider {
     /**
      * @return \SphinxClient
      */
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->sphinxApiClient;
     }
 
     /**
      * @param $sphinxConnection
      */
-    public function setConnection($sphinxConnection) {
+    public function setConnection($sphinxConnection)
+    {
         $this->sphinxApiClient = $sphinxConnection;
     }
 
@@ -68,6 +71,14 @@ class SphinxProvider {
      */
     function  __construct($pool = array())
     {
+        if (empty($pool)) {
+            $pool = array(
+                array(
+                    'host' => '127.0.0.1',
+                    'port' => 9312
+                )
+            );
+        }
         $this->queryArray = array();
         $this->pool = $pool;
     }
@@ -215,10 +226,10 @@ class SphinxProvider {
     }
 
     /**
-     * @param string|array          $filter
-     * @param integer|array         $filterCondition
-     * @param bool                  $isExclude
-     * @param bool                  $isWeak drops condition on $this->clearWeakConditions
+     * @param string|array  $filter
+     * @param integer|array $filterCondition
+     * @param bool          $isExclude
+     * @param bool          $isWeak drops condition on $this->clearWeakConditions
      */
     public function addFilter($filter, $filterCondition, $isExclude = false, $isWeak = false)
     {
@@ -237,11 +248,11 @@ class SphinxProvider {
                 return;
             }
             $this->queryArray[] = array(
-                "type"       => $isExclude ? self::FILTER_EXCLUDE : self::FILTER_INCLUDE,
-                "name"       => $filter,
-                "value"      => $filterCondition,
+                "type" => $isExclude ? self::FILTER_EXCLUDE : self::FILTER_INCLUDE,
+                "name" => $filter,
+                "value" => $filterCondition,
                 "valueArray" => $filterConditionArray,
-                "isWeak"     => $isWeak
+                "isWeak" => $isWeak
             );
         }
     }
@@ -265,11 +276,11 @@ class SphinxProvider {
             } else {
                 $filterCondition = $start . ',' . $stop;
                 $this->queryArray[] = array(
-                    "type"   => $isExclude ? self::RANGE_EXCLUDE : self::RANGE_INCLUDE,
-                    "name"   => $filter,
-                    "value"  => $filterCondition,
-                    "min"    => $start,
-                    "max"    => $stop,
+                    "type" => $isExclude ? self::RANGE_EXCLUDE : self::RANGE_INCLUDE,
+                    "name" => $filter,
+                    "value" => $filterCondition,
+                    "min" => $start,
+                    "max" => $stop,
                     "isWeak" => $isWeak
                 );
             }
@@ -277,10 +288,10 @@ class SphinxProvider {
     }
 
     /**
-     * @param array|string  $field
-     * @param string        $direction
-     * @param bool          $isWeak
-     * @param bool          $priority
+     * @param array|string $field
+     * @param string       $direction
+     * @param bool         $isWeak
+     * @param bool         $priority
      */
     public function addSort($field, $direction, $isWeak = false, $priority = false)
     {
@@ -293,18 +304,18 @@ class SphinxProvider {
             switch ($direction) {
                 case 'asc':
                     $sort = array(
-                        'type'   => self::SORT_ASC,
-                        'name'   => $field,
+                        'type' => self::SORT_ASC,
+                        'name' => $field,
                         'isWeak' => $isWeak,
-                        'value'  => null
+                        'value' => null
                     );
                     break;
                 case 'desc':
                     $sort = array(
-                        'type'   => self::SORT_DESC,
-                        'name'   => $field,
+                        'type' => self::SORT_DESC,
+                        'name' => $field,
                         'isWeak' => $isWeak,
-                        'value'  => null
+                        'value' => null
                     );
                     break;
             }
@@ -319,8 +330,8 @@ class SphinxProvider {
     public function addMaxMatches($max, $isWeak = false)
     {
         $this->queryArray[] = array(
-            'type'   => self::MAX_MATCHES,
-            'value'  => $max,
+            'type' => self::MAX_MATCHES,
+            'value' => $max,
             'isWeak' => $isWeak
         );
     }
@@ -335,22 +346,22 @@ class SphinxProvider {
     {
         if ($offset) {
             $this->queryArray[] = array(
-                'type'   => self::LT_OFFSET,
-                'value'  => $offset,
+                'type' => self::LT_OFFSET,
+                'value' => $offset,
                 'isWeak' => $isWeak
             );
         }
         if ($cutoff) {
             $this->queryArray[] = array(
-                'type'   => self::LT_CUTOFF,
-                'value'  => $cutoff,
+                'type' => self::LT_CUTOFF,
+                'value' => $cutoff,
                 'isWeak' => $isWeak
             );
         }
         if ($limit) {
             $this->queryArray[] = array(
-                'type'   => self::LT_LIMIT,
-                'value'  => $limit,
+                'type' => self::LT_LIMIT,
+                'value' => $limit,
                 'isWeak' => $isWeak
             );
         }
@@ -386,8 +397,8 @@ class SphinxProvider {
         } else {
             if (!empty($selectQuery)) {
                 $this->queryArray[] = array(
-                    'type'   => self::SELECT,
-                    'value'  => $selectQuery,
+                    'type' => self::SELECT,
+                    'value' => $selectQuery,
                     'isWeak' => $isWeak
                 );
             }
@@ -416,8 +427,8 @@ class SphinxProvider {
     public function setMode($mode, $isWeak = false)
     {
         $this->queryArray[] = array(
-            'type'   => self::MODE,
-            'value'  => $mode,
+            'type' => self::MODE,
+            'value' => $mode,
             'isWeak' => $isWeak
         );
     }
@@ -429,13 +440,14 @@ class SphinxProvider {
      * @param $groupSort
      * @param $isWeak
      */
-    public function setGroupBy($attribute, $sortType, $groupSort = '@group desc', $isWeak = false) {
+    public function setGroupBy($attribute, $sortType, $groupSort = '@group desc', $isWeak = false)
+    {
         $this->groupField = $attribute;
         $this->addSelect($attribute);
         $this->queryArray[] = array(
-            'type'   => self::GROUP_BY,
-            'name'  => $attribute,
-            'value'  => $sortType,
+            'type' => self::GROUP_BY,
+            'name' => $attribute,
+            'value' => $sortType,
             'group_sort' => $groupSort,
             'isWeak' => $isWeak
         );
@@ -474,7 +486,10 @@ class SphinxProvider {
      * @return string
      */
     public function getWhereIdWithOrderFunction(
-        $mainTableAlias = "s", $idField = "id", $ids = 0, $recreateConditions = false
+        $mainTableAlias = "s",
+        $idField = "id",
+        $ids = 0,
+        $recreateConditions = false
     ) {
         if (empty($this->conditionQuery) || $recreateConditions) {
             $this->conditionQuery = $this->createSearchQuery();
@@ -626,9 +641,11 @@ class SphinxProvider {
      * @param string $sort
      *
      * @param array  $additionalFields
+     *
      * @return array
      */
-    public function getGroupRequestFromApi($attribute, $sort = '@count desc', $additionalFields = null) {
+    public function getGroupRequestFromApi($attribute, $sort = '@count desc', $additionalFields = null)
+    {
 
         $this->setMode(SPH_MATCH_EXTENDED2);
         $this->addMaxMatches(2000);
@@ -670,7 +687,7 @@ class SphinxProvider {
                     'cnt' => $value['attrs']['@count']
                 );
                 if ($additionalFields !== null) {
-                    foreach ($additionalFields as $target=>$additionalField) {
+                    foreach ($additionalFields as $target => $additionalField) {
                         if (is_string($target)) {
                             $newValue[$target] = $value['attrs'][$additionalField];
                         } else {
@@ -714,13 +731,13 @@ class SphinxProvider {
             $result = $client->Query($this->fulltextQuery, $this->indexes);
 
             $output = array(
-                'data'        => array(0),
-                'total'       => 0,
-                'idsByOrder'  => '0',
+                'data' => array(0),
+                'total' => 0,
+                'idsByOrder' => '0',
                 'total_found' => $result['total'],
-                'warnings'    => $result['warnings'],
-                'errors'      => $result['errors'],
-                'time'      => $result['time']
+                'warnings' => $result['warnings'],
+                'errors' => $result['errors'],
+                'time' => $result['time']
             );
             $error = null;
             if ($client->GetLastError()) {
@@ -734,7 +751,7 @@ class SphinxProvider {
                         'id' => $key,
                     );
                     if ($additionalFields !== null) {
-                        foreach ($additionalFields as $target=>$additionalField) {
+                        foreach ($additionalFields as $target => $additionalField) {
                             if (is_string($target)) {
                                 $newValue[$target] = $value['attrs'][$additionalField];
                             } else {
@@ -763,7 +780,8 @@ class SphinxProvider {
     /**
      * @return bool
      */
-    public static function useSphinxInSearch() {
+    public static function useSphinxInSearch()
+    {
         return self::isSphinxAlive();
     }
 
